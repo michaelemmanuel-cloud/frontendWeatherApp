@@ -1,0 +1,281 @@
+/* ==========================================================================
+   Aura Weather - Modern Weather Dashboard Stylesheet
+   Built with Bootstrap 5 + Vanilla CSS Glassmorphism
+   ========================================================================== */
+
+/* Color Variables & Theme Tokens */
+:root {
+  --bg-dark-dashboard: #0f1115;
+  --bg-surface: #1a1d24;
+  --bg-card: #21252d;
+  --bg-sidebar: #181a20;
+  --color-cyan: #00f2fe;
+  --color-cyan-hover: #38bdf8;
+  --color-amber: #ff8a00;
+  --color-emerald: #10b981;
+  --color-purple: #a855f7;
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --font-family-base: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Global Reset & Base */
+body.bg-dark-dashboard {
+  background-color: var(--bg-dark-dashboard);
+  font-family: var(--font-family-base);
+  color: #f1f5f9;
+  overflow-x: hidden;
+  letter-spacing: -0.01em;
+}
+
+/* Framework Containers & Cards */
+.main-frame {
+  background-color: var(--bg-surface);
+  min-height: calc(100vh - 2rem);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.bg-dashboard-surface {
+  background-color: var(--bg-surface);
+}
+
+.sidebar-rail {
+  background-color: var(--bg-sidebar);
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .sidebar-rail {
+    width: 88px;
+    min-height: 100%;
+  }
+}
+
+/* Navigation Icons */
+.profile-img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-img:hover {
+  transform: scale(1.05);
+  border-color: var(--color-cyan) !important;
+}
+
+.nav-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-icon-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.nav-icon-btn.active {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom Buttons & Pills */
+.btn-cyan {
+  background-color: var(--color-cyan);
+  color: #0f172a;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-cyan:hover {
+  background-color: var(--color-cyan-hover);
+  color: #0f172a;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
+.text-cyan {
+  color: var(--color-cyan) !important;
+}
+
+.text-emerald {
+  color: var(--color-emerald) !important;
+}
+
+.search-pill {
+  width: 220px;
+  transition: all 0.25s ease;
+}
+
+.search-pill:focus-within {
+  width: 280px;
+  border-color: var(--color-cyan) !important;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
+}
+
+.form-bg-transparent {
+  background: transparent !important;
+  outline: none !important;
+  width: 100%;
+}
+
+.form-bg-transparent::placeholder {
+  color: #94a3b8;
+}
+
+/* Hero Weather Card */
+.weather-hero-card {
+  background-image: 
+    linear-gradient(to right, rgba(15, 17, 21, 0.85) 20%, rgba(15, 17, 21, 0.4) 65%, rgba(15, 17, 21, 0.85) 100%), 
+    radial-gradient(circle at 70% 30%, rgba(0, 242, 254, 0.18), transparent 60%),
+    radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.15), transparent 70%),
+    linear-gradient(135deg, #18202c 0%, #222b3a 40%, #121620 100%);
+  border: 1px solid var(--border-glass);
+  min-height: 250px;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hero-blur-glow {
+  position: absolute;
+  top: -20%;
+  right: 15%;
+  width: 240px;
+  height: 240px;
+  background: rgba(0, 242, 254, 0.12);
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.glass-card {
+  background: rgba(33, 37, 45, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.badge-glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+/* Dark Card Modules */
+.card-dark {
+  background-color: var(--bg-card);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card-dark:hover {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* Hourly Card Node */
+.hourly-card-node {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 12px 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.hourly-card-node:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.hourly-card-node.active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-cyan);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Weekly 7-Day Card */
+.weekly-day-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 14px 8px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.weekly-day-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Recent Cities Items */
+.recent-city-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 10px 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.recent-city-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(3px);
+}
+
+/* Radar Wind Map */
+.radar-card {
+  min-height: 170px;
+}
+
+.radar-vortex-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.95) 80%);
+  opacity: 0.8;
+}
+
+.ping-ring {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(0, 242, 254, 0.3);
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.refresh-icon i {
+  display: inline-block;
+  transition: transform 0.5s ease;
+}
+
+.refresh-icon.spinning i {
+  transform: rotate(360deg);
+}

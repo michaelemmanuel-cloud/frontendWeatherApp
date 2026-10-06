@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Weather - Modern Weather Dashboard</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark-dashboard text-light min-vh-100 d-flex items-center justify-content-center p-2 p-md-4">
+
+  <!-- Main Dashboard Wrapper Container -->
+  <div class="container-xxl p-0 main-frame rounded-4 shadow-lg overflow-hidden border border-secondary border-opacity-25 bg-dashboard-surface">
+    <div class="row g-0">
+      
+      <!-- LEFT NAVIGATION RAIL -->
+      <aside class="col-12 col-md-auto sidebar-rail d-flex flex-row flex-md-column justify-content-between items-center p-3 p-md-4 border-end border-white border-opacity-10">
+        <div class="d-flex flex-row flex-md-column align-items-center gap-3 gap-md-4 w-100">
+          <!-- Profile Avatar -->
+          <div class="position-relative cursor-pointer group" title="User Profile">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" 
+                 alt="User Avatar" class="rounded-circle profile-img border border-2 border-white border-opacity-25 shadow-sm">
+            <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-2 border-dark rounded-circle"></span>
+          </div>
+
+          <!-- Nav Links -->
+          <nav class="d-flex flex-row flex-md-column align-items-center gap-2 mt-md-2">
+            <a href="#" class="nav-icon-btn active" title="Dashboard">
+              <i class="bi bi-house-door-fill fs-5"></i>
+            </a>
+            <a href="#" class="nav-icon-btn" title="Saved Locations">
+              <i class="bi bi-geo-alt fs-5"></i>
+            </a>
+            <a href="#" class="nav-icon-btn" title="Weather Radar">
+              <i class="bi bi-compass fs-5"></i>
+            </a>
+            <a href="#" class="nav-icon-btn" title="Analytics & Trends">
+              <i class="bi bi-bar-chart-line fs-5"></i>
+            </a>
+            <a href="#" class="nav-icon-btn" title="Settings">
+              <i class="bi bi-gear fs-5"></i>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Refresh & Sync -->
+        <div class="d-none d-md-flex flex-column align-items-center gap-1 text-center mt-4">
+          <button id="refreshBtn" class="btn btn-link text-secondary p-0 refresh-icon" title="Refresh Weather Data">
+            <i class="bi bi-arrow-clockwise fs-5"></i>
+          </button>
+          <span class="small text-secondary font-monospaced" style="font-size: 0.7rem;">Updated<br><strong class="text-light" id="lastUpdatedTime">Just now</strong></span>
+        </div>
+      </aside>
+
+      <!-- MAIN DASHBOARD CONTENT AREA -->
+      <main class="col flex-grow-1 p-3 p-md-4 d-flex flex-column gap-4 overflow-hidden">
+        
+        <!-- TOP NAVBAR -->
+        <header class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+          <!-- Current Location Header -->
+          <div class="d-flex align-items-center gap-3">
+            <div class="icon-circle bg-white bg-opacity-10 text-cyan">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+              <h1 class="h6 mb-0 text-white fw-bold tracking-wide" id="locationTitle">Abuja, NG</h1>
+              <p class="small text-secondary mb-0" id="currentDateText">Today</p>
+            </div>
+          </div>
+
+          <!-- Search Bar & Controls -->
+          <div class="d-flex align-items-center gap-2 ms-auto">
+            <!-- City Search Form -->
+            <form id="searchForm" class="d-flex align-items-center position-relative">
+              <div class="input-group search-pill overflow-hidden rounded-pill border border-white border-opacity-10 bg-white bg-opacity-10">
+                <span class="input-group-text bg-transparent border-0 text-secondary ps-3">
+                  <i class="bi bi-search"></i>
+                </span>
+                <input type="text" id="cityInput" class="form-bg-transparent text-white border-0 shadow-none ps-1 pe-3 text-xs" 
+                       placeholder="Search city..." aria-label="Search city">
+                <button type="submit" class="btn btn-cyan btn-sm rounded-pill px-3 m-1 fw-medium text-dark">Search</button>
+              </div>
+            </form>
+
+            <!-- Unit Toggle Button -->
+            <button id="unitToggleBtn" class="btn btn-outline-light rounded-pill btn-sm px-3 border-opacity-25" title="Toggle °C / °F">
+              <span id="unitLabel" class="fw-semibold">°C</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- CONTENT GRID -->
+        <div class="row g-4">
+          
+          <!-- LEFT / CENTER COLUMN (HERO, HOURLY, 7-DAY) -->
+          <div class="col-12 col-xl-8 d-flex flex-column gap-4">
+            
+            <!-- Weather Hero Card -->
+            <div class="weather-hero-card rounded-4 p-4 p-md-5 position-relative overflow-hidden shadow-sm d-flex flex-column justify-content-between">
+              <div class="hero-blur-glow"></div>
+              
+              <div class="row items-center g-4 position-relative z-1">
+                <!-- Main Temperature & Condition -->
+                <div class="col-12 col-sm-7">
+                  <div class="d-flex align-items-baseline gap-2">
+                    <span class="display-1 fw-light text-white tracking-tighter" id="heroTemp">27°</span>
+                    <span class="fs-4 text-cyan" id="heroWeatherIcon"><i class="bi bi-clouds-fill"></i></span>
+                  </div>
+                  <h2 class="h3 fw-semibold text-white mb-1" id="heroCondition">Clouds</h2>
+                  <p class="text-secondary small mb-3" id="heroDescription">broken clouds</p>
+
+                  <!-- High / Low Tags -->
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge badge-glass px-3 py-2 text-secondary fw-normal">H <strong class="text-white" id="tempHigh">27°</strong></span>
+                    <span class="badge badge-glass px-3 py-2 text-secondary fw-normal">L <strong class="text-white" id="tempLow">27°</strong></span>
+                    <span class="badge badge-glass px-3 py-2 text-secondary fw-normal d-none d-sm-inline" id="feelsLikeBadge">Feels like <strong class="text-white" id="feelsLikeTemp">30°</strong></span>
+                  </div>
+                </div>
+
+                <!-- Frosted Glass Info Card -->
+                <div class="col-12 col-sm-5">
+                  <div class="glass-card rounded-4 p-3 p-md-4 border border-white border-opacity-10 backdrop-blur">
+                    <div class="d-flex align-items-center gap-2 mb-2 text-cyan">
+                      <i class="bi bi-shield-check"></i>
+                      <span class="small fw-semibold text-uppercase tracking-wider">Atmospheric Data</span>
+                    </div>
+                    <p class="small text-secondary mb-0 leading-relaxed font-light">
+                      Real-time telemetry and atmospheric metrics powered by OpenWeatherMap API for high-precision local forecasting.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+
+          <!-- RIGHT COLUMN (LIVE CONDITIONS, RECENT CITIES, WIND MAP) -->
+          <div class="col-12 col-xl-4 d-flex flex-column gap-4">
+            
+            <!-- Live Conditions Card -->
+            <div class="card-dark rounded-4 p-4 border border-white border-opacity-10 shadow-sm">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <h3 class="h6 text-white mb-0 fw-semibold">Live Conditions</h3>
+                <span class="badge bg-warning bg-opacity-20 text-warning border border-warning border-opacity-25 rounded-pill px-3 py-1" id="conditionStatusPill">
+                  Moderate
+                </span>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between text-secondary small mb-2">
+                <span>Telemetry Trend</span>
+                <span class="text-emerald font-semibold"><i class="bi bi-arrow-up-right me-1"></i>23.8% Optimal</span>
+              </div>
+
+              <!-- Trend Curve SVG Graph -->
+              <div class="my-3 position-relative">
+                <svg class="w-100 overflow-visible" height="60" viewBox="0 0 280 60" fill="none">
+                  <defs>
+                    <linearGradient id="curveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#00f2fe" />
+                      <stop offset="50%" stop-color="#a855f7" />
+                      <stop offset="100%" stop-color="#ff8a00" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M 5 50 C 40 50, 60 20, 100 20 C 140 20, 160 38, 200 38 C 230 38, 255 12, 275 10" 
+                        stroke="url(#curveGradient)" stroke-width="3" fill="transparent" stroke-linecap="round"/>
+                  <circle cx="200" cy="38" r="5" fill="#ffffff" stroke="#a855f7" stroke-width="3" />
+                </svg>
+              </div>
+
+              <!-- Bottom Stats Row -->
+              <div class="row text-center pt-3 border-top border-white border-opacity-10">
+                <div class="col-4">
+                  <div class="text-secondary small mb-1"><i class="bi bi-droplet-fill text-cyan me-1"></i>Humidity</div>
+                  <div class="fw-semibold text-white fs-6" id="humidityVal">82%</div>
+                </div>
+                <div class="col-4 border-start border-end border-white border-opacity-10">
+                  <div class="text-secondary small mb-1"><i class="bi bi-wind text-info me-1"></i>Wind</div>
+                  <div class="fw-semibold text-white fs-6" id="windVal">1.2 m/s</div>
+                </div>
+                <div class="col-4">
+                  <div class="text-secondary small mb-1"><i class="bi bi-speedometer2 text-warning me-1"></i>Pressure</div>
+                  <div class="fw-semibold text-white fs-6" id="pressureVal">1009 hPa</div>
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Wind Radar Map Card -->
+            <div class="card-dark rounded-4 p-4 border border-white border-opacity-10 position-relative overflow-hidden shadow-sm radar-card">
+              <div class="radar-vortex-bg"></div>
+              <div class="position-relative z-1 d-flex flex-column justify-content-between h-100">
+                <div>
+                  <span class="small fw-semibold text-cyan text-uppercase tracking-wider d-block mb-1">Atmospheric Radar</span>
+                  <div class="h5 text-white mb-0 fw-bold" id="radarWindSpeed">1.2 m/s</div>
+                  <span class="small text-secondary" id="radarDirection">252° Vectors</span>
+                </div>
+                
+                <div class="d-flex align-items-center justify-content-between mt-4">
+                  <span class="badge bg-white bg-opacity-10 text-light rounded-pill px-3 py-1 border border-white border-opacity-10">Live Radar Active</span>
+                  <div class="radar-ping-node position-relative d-inline-flex items-center justify-center">
+                    <span class="ping-ring"></span>
+                    <div class="node-circle bg-cyan text-dark rounded-circle p-2 shadow">
+                      <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/bootstrap.bundle.min.js"></script>
+  <!-- Custom Frontend Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
